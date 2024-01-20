@@ -82,15 +82,6 @@
         "tsConfigPath": "apps/spotlight/tsconfig.app.json"
       }
     },
-    "core": {
-      "type": "library",
-      "root": "libs/core",
-      "entryFile": "index",
-      "sourceRoot": "libs/core/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/core/tsconfig.lib.json"
-      }
-    },
     "common": {
       "type": "library",
       "root": "libs/common",

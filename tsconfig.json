@@ -17,19 +17,10 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "typeRoots": ["types"],
     "paths": {
-      "@app/core": [
-        "libs/core/src"
-      ],
-      "@app/core/*": [
-        "libs/core/src/*"
-      ],
-      "common/common": [
-        "libs/common/src"
-      ],
-      "common/common/*": [
-        "libs/common/src/*"
-      ]
+      "@app/*": ["libs/common/src/*"]
     }
   }
+  // "include": ["types/**/*.d.ts"]
 }
