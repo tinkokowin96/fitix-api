@@ -25,3 +25,5 @@ enum EField {
   Phone = 'Phone',
   Color = 'Color',
 }
+
+enum ECategory {}
