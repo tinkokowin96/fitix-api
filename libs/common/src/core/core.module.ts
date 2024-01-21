@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { SharedModule } from '@app/shared/shared.module';
+import { Audit, AuditSchema } from '@app/schema/audit.schema';
 
 @Module({})
 export class CoreModule implements NestModule {
@@ -14,7 +15,10 @@ export class CoreModule implements NestModule {
     this.config = config;
     const module: any = {
       module: CoreModule,
-      imports: [SharedModule], //Global Module
+      imports: [
+        SharedModule, //Global Module
+        MongooseModule.forFeature([{ name: Audit.name, schema: AuditSchema }]),
+      ],
     };
     if (config.mongo !== false)
       module.imports.push(
