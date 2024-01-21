@@ -4,6 +4,7 @@ import * as cookieParser from 'cookie-parser';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { SharedModule } from '@app/shared/shared.module';
 
 @Module({})
 export class CoreModule implements NestModule {
@@ -11,9 +12,9 @@ export class CoreModule implements NestModule {
 
   static forRoot(config: CoreModuleConfigs) {
     this.config = config;
-    const module = {
+    const module: any = {
       module: CoreModule,
-      imports: [],
+      imports: [SharedModule], //Global Module
     };
     if (config.mongo !== false)
       module.imports.push(
