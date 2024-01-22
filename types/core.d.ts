@@ -1,7 +1,3 @@
-enum EApp {
-  Admin = 'Admin',
-}
-
 type CoreModuleConfigs = {
   app: EApp;
   useCookie?: boolean;

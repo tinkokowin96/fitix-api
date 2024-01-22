@@ -1,4 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
+enum ERequestMethod {
+  GET = 'GET',
+  POST = 'POST',
+  PATCH = 'PATCH',
+}
+
 enum EApp {
   Admin = 'Admin',
 }
