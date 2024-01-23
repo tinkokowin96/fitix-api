@@ -1,7 +1,7 @@
 import { responseError } from '@app/helper/misc.helper';
 import { APP, RECORD_EVENT } from '@app/utils/constants';
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientProxy, RmqContext } from '@nestjs/microservices';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Request, Response } from 'express';
 import { ClientSession, Connection } from 'mongoose';
@@ -19,7 +19,14 @@ type MakeTransactionType = {
 export abstract class CoreService {
   @InjectConnection() connection: Connection;
   @Inject(APP) client: ClientProxy;
-  constructor() {}
+  private readonly logger = new Logger(APP);
+
+  ack(context: RmqContext, name: string) {
+    this.logger.log(`${name} on ${APP} acknowledged`);
+    const channel = context.getChannelRef();
+    const message = context.getMessage();
+    channel.ack(message);
+  }
 
   async makeTransaction({
     session: ses,
