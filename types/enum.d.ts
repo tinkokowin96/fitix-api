@@ -33,4 +33,21 @@ enum EField {
   Color = 'Color',
 }
 
-enum ECategory {}
+enum EStaff {
+  General = 'General',
+  Nutritionist = 'Nutritionist',
+  Doctor = 'Doctor',
+}
+
+enum ECategory {
+  Option = 'Option',
+  SuperAdmin = 'SuperAdmin',
+  Admin = 'Admin',
+  Trainer = 'Trainer',
+  GeneralStaff = 'GeneralStaff',
+  Nutritionist = 'Nutritionist',
+  Doctor = 'Doctor',
+  Member = 'Member',
+}
+
+enum EEntityMedtada {}

@@ -2,7 +2,8 @@ import { AppSchema } from '@app/decorator/app_schema.decorator';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { SchemaTypes } from 'mongoose';
-import { MetaData } from './metadata.schema';
+import { Category } from './category.schema';
+import { EntityMetaData } from './entity_metadata.schema';
 
 @AppSchema()
 export class Option {
@@ -11,8 +12,11 @@ export class Option {
   @IsString()
   name: string;
 
-  @Prop({ type: [{ type: SchemaTypes.ObjectId, ref: 'MetaData' }] })
-  metaData: MetaData[];
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'Category' })
+  category: Category;
+
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'EntityMetaData' })
+  metaData: EntityMetaData;
 }
 
 export const OptionSchema = SchemaFactory.createForClass(Option);

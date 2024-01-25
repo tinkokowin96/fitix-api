@@ -1,6 +1,6 @@
 import { AppSchema } from '@app/decorator/app_schema.decorator';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 @AppSchema()
 export class Category {
@@ -8,6 +8,11 @@ export class Category {
   @IsNotEmpty()
   @IsString()
   name: string;
+
+  @Prop({ type: String, enum: ECategory, required: true })
+  @IsNotEmpty()
+  @IsEnum(ECategory)
+  type: ECategory;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
