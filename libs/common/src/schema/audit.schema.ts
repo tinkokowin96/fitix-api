@@ -2,7 +2,7 @@ import { AppSchema } from '@app/decorator/app_schema.decorator';
 import { parseUA } from '@app/helper/user_agent.helper';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { IsEnum, IsIP, IsNotEmpty, IsString } from 'class-validator';
-import { SchemaTypes, User } from 'mongoose';
+import { SchemaTypes } from 'mongoose';
 import { IResult } from 'ua-parser-js';
 
 @AppSchema()

@@ -3,17 +3,7 @@ import { APP, RECORD_EVENT } from '@app/utils/constants';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientProxy, RmqContext } from '@nestjs/microservices';
 import { InjectConnection } from '@nestjs/mongoose';
-import { Request, Response } from 'express';
-import { ClientSession, Connection } from 'mongoose';
-
-type MakeTransactionType = {
-  session?: ClientSession;
-  action: (session: ClientSession) => Promise<any>;
-  request: Request;
-  response?: Response;
-  payload: any;
-  method: ERequestMethod;
-};
+import { Connection } from 'mongoose';
 
 @Injectable()
 export abstract class CoreService {
@@ -35,7 +25,7 @@ export abstract class CoreService {
     request,
     response,
     method,
-  }: MakeTransactionType) {
+  }: Core.MakeTransaction) {
     const session = ses ?? (await this.connection.startSession());
     try {
       session.startTransaction();

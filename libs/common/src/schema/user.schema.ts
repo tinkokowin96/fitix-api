@@ -3,7 +3,9 @@ import { hash } from 'bcryptjs';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
 import { SchemaTypes } from 'mongoose';
 import { EntityMetaData } from './entity_metadata.schema';
+import { AppSchema } from '@app/decorator/app_schema.decorator';
 
+@AppSchema()
 export class User {
   @Prop({ type: String, required: true })
   @IsString()
