@@ -1,18 +1,23 @@
 import { responseError } from '@app/helper/misc.helper';
 import { APP, RECORD_EVENT } from '@app/utils/constants';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ClientProxy, RmqContext } from '@nestjs/microservices';
 import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 
-@Injectable()
 export abstract class CoreService {
-  @InjectConnection() connection: Connection;
-  @Inject(APP) client: ClientProxy;
-  private readonly logger = new Logger(APP);
+  constructor(
+    @InjectConnection() private readonly connection: Connection,
+    private readonly client: ClientProxy,
+    private readonly config: ConfigService,
+  ) {}
+
+  private readonly app = this.config.get<string>(APP);
+  private readonly logger = new Logger(this.app);
 
   ack(context: RmqContext, name: string) {
-    this.logger.log(`${name} on ${APP} acknowledged`);
+    this.logger.log(`${name} on ${this.app} acknowledged`);
     const channel = context.getChannelRef();
     const message = context.getMessage();
     channel.ack(message);

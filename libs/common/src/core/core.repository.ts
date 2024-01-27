@@ -1,11 +1,6 @@
 import { Category } from '@app/schema/category.schema';
-import { MODEL_TOKEN, PAGE_SIZE } from '@app/utils/constants';
-import {
-  BadRequestException,
-  Inject,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { PAGE_SIZE } from '@app/utils/constants';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   ClientSession,
@@ -49,11 +44,10 @@ type UpdateType<T> = Pick<FindType<T>, 'filter' | 'options'> & {
   session: ClientSession;
 };
 
-@Injectable()
 export abstract class CoreRepository<T> {
   constructor(
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
-    @Inject(MODEL_TOKEN) protected readonly model: Model<T>,
+    protected readonly model: Model<T>, //must inject from service class
   ) {}
 
   async create({ dto, session, category }: CreateType<T>) {

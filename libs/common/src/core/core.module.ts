@@ -6,6 +6,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 import { SharedModule } from '@app/shared/shared.module';
 import { Audit, AuditSchema } from '@app/schema/audit.schema';
+import { RMQ_URI } from '@app/utils/constants';
 
 @Module({})
 export class CoreModule implements NestModule {
@@ -40,8 +41,10 @@ export class CoreModule implements NestModule {
           useFactory: (configService: ConfigService) => ({
             transport: Transport.RMQ,
             options: {
-              urls: configService.get('RMQ_URL'),
+              urls: configService.get(RMQ_URI),
               queue: `${config.app}_queue`,
+              noAck: false,
+              persistent: true,
             },
           }),
           inject: [ConfigService],
