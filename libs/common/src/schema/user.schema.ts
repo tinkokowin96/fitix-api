@@ -1,4 +1,4 @@
-import { Prop } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcryptjs';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
 import { SchemaTypes } from 'mongoose';
@@ -33,3 +33,5 @@ export class User {
   @IsNotEmpty()
   metaData: EntityMetaData;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);

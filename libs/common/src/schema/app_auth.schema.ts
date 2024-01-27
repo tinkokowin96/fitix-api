@@ -1,5 +1,5 @@
 import { AppSchema } from '@app/decorator/app_schema.decorator';
-import { Prop } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcryptjs';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
@@ -24,3 +24,5 @@ export class AppAuth {
   @IsString()
   password: string;
 }
+
+export const AppAuthSchema = SchemaFactory.createForClass(AppAuth);

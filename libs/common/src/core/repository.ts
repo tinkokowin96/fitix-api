@@ -44,11 +44,9 @@ type UpdateType<T> = Pick<FindType<T>, 'filter' | 'options'> & {
   session: ClientSession;
 };
 
-export abstract class CoreRepository<T> {
-  constructor(
-    @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
-    protected readonly model: Model<T>, //must inject from service class
-  ) {}
+export class Repository<T> {
+  @InjectModel(Category.name) private readonly categoryModel: Model<Category>;
+  constructor(protected readonly model: Model<T>) {}
 
   async create({ dto, session, category }: CreateType<T>) {
     if (category) {

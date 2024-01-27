@@ -1,12 +1,21 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { AppAuth } from '@app/schema/app_auth.schema';
+import { Audit, AuditSchema } from '@app/schema/audit.schema';
+import { SharedModule } from '@app/shared/shared.module';
+import { APP_AUTH_MODEL, RMQ_URI } from '@app/utils/constants';
+import {
+  DynamicModule,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 import * as cookieParser from 'cookie-parser';
-import { ConfigService } from '@nestjs/config';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { Model } from 'mongoose';
 import { join } from 'path';
-import { SharedModule } from '@app/shared/shared.module';
-import { Audit, AuditSchema } from '@app/schema/audit.schema';
-import { RMQ_URI } from '@app/utils/constants';
+import { Repository } from './repository';
+import { BasicAuthMiddleware } from './middleware/basic_auth.middleware';
 
 @Module({})
 export class CoreModule implements NestModule {
@@ -14,11 +23,19 @@ export class CoreModule implements NestModule {
 
   static forRoot(config: CoreModuleConfigs) {
     this.config = config;
-    const module: any = {
+    const module: DynamicModule = {
       module: CoreModule,
       imports: [
         SharedModule, //Global Module
         MongooseModule.forFeature([{ name: Audit.name, schema: AuditSchema }]),
+      ],
+      providers: [
+        ConfigModule,
+        {
+          provide: APP_AUTH_MODEL,
+          useFactory: (model: Model<AppAuth>) => new Repository(model),
+          inject: [AppAuth],
+        },
       ],
     };
     if (config.mongo !== false)
@@ -67,5 +84,8 @@ export class CoreModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     if (CoreModule.config.useCookie !== false)
       consumer.apply(cookieParser()).forRoutes('*');
+    consumer
+      .apply(BasicAuthMiddleware)
+      .forRoutes('/^/.*/swagger$/', '/^/login$/', '/^/register$/');
   }
 }
