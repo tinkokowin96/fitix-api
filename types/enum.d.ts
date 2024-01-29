@@ -1,5 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+enum EValidator {
+  IsString = 'IsString',
+  IsNotEmpty = 'IsNotEmpty',
+  IsEnum = 'IsEnum',
+  IsBoolean = 'IsBoolean',
+  IsIP = 'IsIP',
+}
+
 enum ERequestMethod {
   GET = 'GET',
   POST = 'POST',

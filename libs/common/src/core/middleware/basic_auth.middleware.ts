@@ -21,7 +21,7 @@ export class BasicAuthMiddleware implements NestMiddleware {
       filter: { app },
     });
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Basic')) isValid = true;
+    if (!authHeader || !authHeader.startsWith('Basic')) isValid = false;
     if (isValid) {
       const [usr, pass] = Buffer.from(authHeader.split(' ')[1], 'base64')
         .toString('ascii')

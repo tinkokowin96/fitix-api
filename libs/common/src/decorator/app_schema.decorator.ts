@@ -4,7 +4,7 @@ import { SchemaTypes } from 'mongoose';
 
 export function AppSchema() {
   return function (target: any) {
-    ['_id', 'createdAt', 'updatedAt'].map((key) => {
+    ['_id', 'createdAt', 'updatedAt'].forEach((key) => {
       if (key === '_id') {
         Prop({ type: SchemaTypes.ObjectId })(target.prototype, key);
         IsMongoId()(target.prototype, key);

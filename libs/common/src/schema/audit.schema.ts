@@ -1,49 +1,47 @@
+import { User } from '@app/core/dto/user.dto';
+import { AppProp } from '@app/decorator/app_prop.decorator';
 import { AppSchema } from '@app/decorator/app_schema.decorator';
 import { parseUA } from '@app/helper/user_agent.helper';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { IsEnum, IsIP, IsNotEmpty, IsString } from 'class-validator';
+import { SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes } from 'mongoose';
 import { IResult } from 'ua-parser-js';
 
 @AppSchema()
 export class Audit {
-  @Prop({ type: String, enum: EPath, required: true })
-  @IsNotEmpty()
-  @IsEnum(EPath)
+  @AppProp(
+    { type: String, enum: EPath },
+    { validateString: true, swagger: { example: 'login' } },
+  )
   path: EPath;
 
-  @Prop({ type: String, enum: ERequestMethod })
-  @IsNotEmpty()
-  @IsEnum(ERequestMethod)
+  @AppProp({ type: String, enum: ERequestMethod })
   method: ERequestMethod;
 
-  @Prop({ type: String, required: true })
-  @IsNotEmpty()
-  @IsIP()
+  @AppProp(
+    { type: String },
+    {
+      swagger: { example: '102.205.88.126' },
+      validations: [{ name: EValidator.IsIP }],
+    },
+  )
   submittedIP: string;
 
-  @Prop({ type: String, required: true })
-  @IsNotEmpty()
-  @IsString()
+  @AppProp({ type: String }, { validateString: true })
   sessionId: string;
 
-  @Prop({
-    type: SchemaTypes.Mixed,
-    required: true,
-    set: (ua: string) => parseUA(ua),
-  })
-  @IsNotEmpty()
+  @AppProp({ type: SchemaTypes.Mixed, set: (ua: string) => parseUA(ua) })
   userAgent: IResult;
 
-  @Prop({ type: SchemaTypes.Mixed })
-  @IsNotEmpty()
+  @AppProp({ type: SchemaTypes.Mixed })
   payload: any;
 
-  @Prop({ type: SchemaTypes.Mixed })
-  @IsNotEmpty()
+  @AppProp({ type: SchemaTypes.Mixed })
   response: any;
 
-  @Prop({ type: SchemaTypes.Mixed })
+  @AppProp(
+    { type: SchemaTypes.Mixed },
+    { required: false, transformer: { typeFunction: () => User } },
+  )
   submittedUser?: User;
 }
 
