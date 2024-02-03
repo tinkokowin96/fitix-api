@@ -1,25 +1,21 @@
+import { AppProp } from '@app/decorator/app_prop.decorator';
 import { AppSchema } from '@app/decorator/app_schema.decorator';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes } from 'mongoose';
 import { Field } from './field.schema';
 
 @AppSchema()
 export class MetaData {
-  @Prop({ type: String, required: true })
-  @IsNotEmpty()
-  @IsString()
+  @AppProp({ type: String })
   name: string;
 
-  @Prop({ type: String })
-  @IsString()
-  description: string;
+  @AppProp({ type: String }, { required: false })
+  description?: string;
 
-  @Prop({ type: String })
-  @IsString()
-  remark: string;
+  @AppProp({ type: String }, { required: false })
+  remark?: string;
 
-  @Prop({ type: [{ type: SchemaTypes.ObjectId, ref: 'Field' }] })
+  @AppProp({ type: [{ type: SchemaTypes.ObjectId, ref: 'Field' }] })
   fields: Field[];
 }
 

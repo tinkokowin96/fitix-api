@@ -1,21 +1,16 @@
+import { AppProp } from '@app/decorator/app_prop.decorator';
 import { AppSchema } from '@app/decorator/app_schema.decorator';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { SchemaFactory } from '@nestjs/mongoose';
 
 @AppSchema()
 export class Field {
-  @Prop({ type: String, required: true })
-  @IsNotEmpty()
-  @IsString()
+  @AppProp({ type: String })
   name: string;
 
-  @Prop({ type: String, enum: EField, required: true })
-  @IsNotEmpty()
-  @IsEnum(EField)
+  @AppProp({ type: String, enum: EField })
   type: EField;
 
-  @Prop({ type: String }) //will store as string (won't sanitze if stored as any)
-  @IsString()
+  @AppProp({ type: String }) //will store as string (won't sanitze if stored as any)
   value: string;
 }
 

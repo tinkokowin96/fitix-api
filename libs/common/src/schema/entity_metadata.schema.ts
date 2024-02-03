@@ -1,23 +1,38 @@
+import { AppProp } from '@app/decorator/app_prop.decorator';
 import { AppSchema } from '@app/decorator/app_schema.decorator';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { ArrayNotEmpty, IsEnum, IsNotEmpty } from 'class-validator';
+import { SchemaFactory } from '@nestjs/mongoose';
 import { SchemaTypes } from 'mongoose';
 import { MetaData } from './metadata.schema';
+import { Club } from './club.schema';
+
+/**
+  TODO: To restrict which user allowed to modify which entitymetada(**NO UI FOR ANY APP TO MANAGE THAT**)
+
+  ========== Super Admin (FITIX) ============
+  Club
+  ========== Super Admin (FITIX) ============
+
+  ================= Admin ===================
+  ================= Admin ===================
+
+  ================ Trainer ==================
+  ================ Trainer ==================
+
+  ================= Member ==================
+  ================= Member ==================
+
+ */
 
 @AppSchema()
 export class EntityMetaData {
-  @Prop({ type: String, enum: EEntityMedtada, required: true })
-  @IsNotEmpty()
-  @IsEnum(EEntityMedtada)
+  @AppProp({ type: String, enum: EEntityMedtada })
   entity: EEntityMedtada;
 
-  @Prop({ type: [{ type: SchemaTypes.Mixed, ref: 'MetaData' }] })
-  @IsNotEmpty()
-  @ArrayNotEmpty()
+  @AppProp({ type: [{ type: SchemaTypes.Mixed, ref: 'MetaData' }] })
   metaData: MetaData[];
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: 'Club' })
-  club: Club;
+  @AppProp({ type: SchemaTypes.ObjectId, ref: 'Club' }, { required: false })
+  club?: Club;
 }
 
 export const EntityMetaDataSchema =

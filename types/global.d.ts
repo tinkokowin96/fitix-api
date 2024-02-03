@@ -7,6 +7,6 @@ declare global {
 declare module 'express' {
   interface Request {
     appPath: EPath;
-    id;
+    id: ObjectId;
   }
 }

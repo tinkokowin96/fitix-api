@@ -6,6 +6,7 @@ enum EValidator {
   IsEnum = 'IsEnum',
   IsBoolean = 'IsBoolean',
   IsIP = 'IsIP',
+  Matches = 'Matches',
 }
 
 enum ERequestMethod {
@@ -16,7 +17,28 @@ enum ERequestMethod {
 
 enum EApp {
   Admin = 'Admin',
+  Class = 'Class',
+  Community = 'Community',
+  Misc = 'Misc',
+  Payment = 'Payment',
+  Permission = 'Permission',
+  Spotlight = 'Spotlight',
+  User = 'User',
 }
+
+enum ESchema {
+  AppAuth = 'AppAuth',
+  Audit = 'Audit',
+  Category = 'Category',
+  Club = 'Club',
+  EntityMetaData = 'EntityMetaData',
+  Field = 'Field',
+  MetaData = 'MetaData',
+  Option = 'Option',
+  User = 'User',
+}
+
+enum EPath {}
 
 enum EUser {
   SuperAdmin = 'SuperAdmin',
@@ -58,4 +80,8 @@ enum ECategory {
   Member = 'Member',
 }
 
-enum EEntityMedtada {}
+enum EEntityMedtada {
+  Option = 'Option',
+  User = 'User',
+  Club = 'Club',
+}

@@ -8,11 +8,14 @@ import { IResult } from 'ua-parser-js';
 
 @AppSchema()
 export class Audit {
-  @AppProp(
-    { type: String, enum: EPath },
-    { validateString: true, swagger: { example: 'login' } },
-  )
+  @AppProp({ type: String, enum: EApp })
+  app: EApp;
+
+  @AppProp({ type: String, enum: EPath })
   path: EPath;
+
+  @AppProp({ type: String, enum: ESchema })
+  schema: ESchema;
 
   @AppProp({ type: String, enum: ERequestMethod })
   method: ERequestMethod;

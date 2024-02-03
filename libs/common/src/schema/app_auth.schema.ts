@@ -8,21 +8,10 @@ export class AppAuth {
   @AppProp({ type: String, enum: EApp })
   app: EApp;
 
-  @AppProp(
-    { type: String },
-    { validateString: true, swagger: { example: 'admin' } },
-  )
+  @AppProp({ type: String }, { userName: true })
   userName: string;
 
-  @AppProp(
-    { type: String, set: async (pas) => await hash(pas, 16) },
-    {
-      swagger: {
-        example: '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
-        description: 'Hashed password',
-      },
-    },
-  )
+  @AppProp({ type: String, set: async (pas) => await hash(pas, 16) })
   password: string;
 }
 

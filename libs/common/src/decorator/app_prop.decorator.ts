@@ -8,11 +8,13 @@ import {
   IsIP,
   IsNotEmpty,
   IsString,
+  Matches,
   ValidationOptions,
 } from 'class-validator';
 import { SchemaDefinition } from 'mongoose';
 
 type Options = {
+  userName?: boolean;
   required?: boolean;
   validateString?: boolean;
   prop?: boolean;
@@ -23,6 +25,7 @@ type Options = {
   swagger?: Omit<ApiPropertyOptions, 'type'>;
   validations?: {
     name: EValidator;
+    regex?: RegExp;
     options?: ValidationOptions;
   }[];
 };
@@ -30,8 +33,9 @@ type Options = {
 export function AppProp(propOptions: SchemaDefinition<any>, options?: Options) {
   return function (target: any, key: string) {
     const {
-      validateString = false,
+      validateString = true,
       prop = true,
+      userName = false,
       transformer,
       swagger,
       validations,
@@ -41,7 +45,14 @@ export function AppProp(propOptions: SchemaDefinition<any>, options?: Options) {
     ApiProperty({
       type: propOptions.type,
       enum: propOptions.enum as any,
-      example: propOptions.enum ? Object.keys(propOptions.enum)[0] : undefined,
+      example: propOptions.enum
+        ? Object.keys(propOptions.enum)[0]
+        : userName
+          ? 'fitixUser11'
+          : undefined,
+      description: userName
+        ? 'Unique username with contain letters & numbers only'
+        : undefined,
       ...swagger,
     })(target, key);
 
@@ -65,7 +76,13 @@ export function AppProp(propOptions: SchemaDefinition<any>, options?: Options) {
         break;
     }
 
-    validations?.forEach(({ name, options: validateOption }) => {
+    if (userName) {
+      Matches(/^[a-zA-Z0-9]+$/, {
+        message: 'Username must contain only letters and numbers',
+      })(target, key);
+    }
+
+    validations?.forEach(({ name, regex, options: validateOption }) => {
       switch (name) {
         case EValidator.IsString:
           IsString(validateOption)(target, key);
@@ -73,6 +90,10 @@ export function AppProp(propOptions: SchemaDefinition<any>, options?: Options) {
 
         case EValidator.IsIP:
           IsIP()(target, key);
+          break;
+
+        case EValidator.Matches:
+          Matches(regex, validateOption)(target, key);
           break;
 
         default:
